@@ -1,0 +1,36 @@
+name: continuous integration
+on:
+  - push
+  - pull_request
+
+jobs:
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up py37
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: fetch pebble repo
+        uses: actions/checkout@v2
+        with:
+          repository: letsencrypt/pebble
+          ref: v2.3.0
+          path: pebble_repo
+      - name: fetch pebble
+        run: |
+          .ci/fetch-pebble.sh
+          mkdir -p $HOME/bin && mv pebble pebble-challtestsrv $HOME/bin/
+          cp -a pebble_repo/test/certs $HOME/pebble_certs
+      - name: install deps
+        run: |
+          python -m pip install -U pip
+          pip install tox
+      - name: run tests
+        run: |
+          export PEBBLE_CMD=$HOME/bin/pebble
+          export PEBBLE_CHALLTESTSRV_CMD=$HOME/bin/pebble-challtestsrv
+          export PEBBLE_CERTS_DIR=$HOME/pebble_certs
+          tox
