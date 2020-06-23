@@ -19,7 +19,7 @@ jobs:
     - name: Publish to GPR
       run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:latest"
   BuildFromGPR:
-    needs: build_docker_image
+    needs: RegistryPush
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
