@@ -1,0 +1,20 @@
+name: Push Images to registry
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  RegistryPush:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build and tag image
+      run: |
+        docker build -t "docker.pkg.github.com/tafy2392/python-auth-package/munya:latest" .
+    - name: Docker login
+      run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p $GITHUB_TOKEN
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Publish to GPR
+      run: docker push "docker.pkg.github.com/tafy2392/python-auth-package/munya:latest"
