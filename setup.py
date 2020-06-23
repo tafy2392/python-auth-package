@@ -14,7 +14,7 @@ setup(
     name="marathon-acme-trio",
     version="0.0.1.dev0",
     license="MIT",
-    description="Replacement for marathon-acme",
+    description="Replacement for python-marathon-acme",
     author="Praekelt.org SRE team",
     author_email="sre@praekelt.org",
     long_description=read("README.md"),
