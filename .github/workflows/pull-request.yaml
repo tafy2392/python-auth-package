@@ -24,7 +24,7 @@ jobs:
       - name: Publish to GPR
         run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${GITHUB.HEAD_REF}"
   BuildFromGPR:
-    needs: build_and_release_on_pr
+    needs: testOnPullRequest
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
