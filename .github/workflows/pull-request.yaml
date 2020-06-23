@@ -9,4 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Branch name
-        run: echo running on branch ${GITHUB_REF}
+        run: |
+          echo "Pull request's base branch is: ${BASE_BRANCH}"
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+        if: github.event_name == 'pull_request'
