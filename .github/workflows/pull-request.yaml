@@ -10,19 +10,17 @@ jobs:
       - uses: actions/checkout@v2
       - name: Branch name
         run: |
-          echo "Pull request's base branch is: $GITHUB.HEAD_REF"
-        env:
-          GITHUB.HEAD_REF: ${{ github.head_ref }}
+          echo "Pull request's base branch is: ${{ github.head_ref }}"
         if: github.event_name == 'pull_request'
       - name: Build and tag image
         run: |
-          docker build -t "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:$GITHUB.HEAD_REF" .
+          docker build -t "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ github.head_ref }}" .
       - name: Docker login
         run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p $GITHUB_TOKEN
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Publish to GPR
-        run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:$GITHUB.HEAD_REF"
+        run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ github.head_ref }}"
   BuildFromGPR:
     needs: testOnPullRequest
     runs-on: ubuntu-latest
@@ -34,7 +32,7 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Pull Docker image
       run: |
-        docker pull "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:$GITHUB.HEAD_REF"
+        docker pull "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ github.head_ref }}"
     - name: Run image
-      run: docker run -it -d --name builder -v $GITHUB_WORKSPACE:/workspace -w /workspace docker.pkg.github.com/$GITHUB_REPOSITORY/munya:$GITHUB.HEAD_REF
+      run: docker run -it -d --name builder -v $GITHUB_WORKSPACE:/workspace -w /workspace docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ github.head_ref }}
 
