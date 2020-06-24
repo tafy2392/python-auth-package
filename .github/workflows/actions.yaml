@@ -15,19 +15,20 @@ jobs:
     - name: Determine if its a push or pull request
       id: tag
       run: |
-        if [ ${{github.event_name }} == 'pull_request' ]; then echo "::set-output name=tag::${{ github.head_ref }}"; echo "this part" ;
+        if [ ${{github.event_name }} == 'pull_request' ]
+          then echo "::set-output name=tag::${{ github.head_ref }}";
         else
           echo '::set-output name=tag::latest'
         fi
     - name: Build and tag image
       run: |
-        docker build -t "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ steps.tag.outputs.tag }}" .
+        docker build -t "docker.pkg.github.com/$GITHUB_REPOSITORY/marathon-acme-trio:${{ steps.tag.outputs.tag }}" .
     - name: Docker login
       run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p $GITHUB_TOKEN
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Publish to GPR
-      run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ steps.tag.outputs.tag }}"
+      run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/marathon-acme-trio:${{ steps.tag.outputs.tag }}"
   BuildFromGPR:
     needs: RegistryPush
     runs-on: ubuntu-latest
@@ -46,9 +47,11 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Pull Docker image
       run: |
-        docker pull "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ steps.tag.outputs.tag }}"
+        docker pull "docker.pkg.github.com/$GITHUB_REPOSITORY/marathon-acme-trio:${{ steps.tag.outputs.tag }}"
     - name: Run image
-      run: docker run -it -d --name builder -v $GITHUB_WORKSPACE:/workspace -w /workspace docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ steps.tag.outputs.tag }}
+      run: |
+        docker run -it -d --name builder -v $GITHUB_WORKSPACE:/workspace \
+        -w /workspace docker.pkg.github.com/$GITHUB_REPOSITORY/marathon-acme-trio:${{ steps.tag.outputs.tag }}
 
 
 
