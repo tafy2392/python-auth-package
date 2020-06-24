@@ -14,13 +14,13 @@ jobs:
     - uses: actions/checkout@v1
     - name: Determine if its a push or pull request
       run: |
-        if [ github.event_name  == 'pull_request' ]; then echo '::set-env name=TAG::${{ github.head_ref }}' ;
+        if [ github.event_name  == 'pull_request' ]; then echo "::set-env name=TAG::${{ github.head_ref }}" ;
         else
           echo '::set-env name=TAG::latest'
         fi
     - name: Build and tag image
       run: |
-        docker build -t "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:"$TAG
+        docker build -t "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:$TAG"
     - name: Docker login
       run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p $GITHUB_TOKEN
       env:
