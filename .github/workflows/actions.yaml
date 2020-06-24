@@ -48,7 +48,7 @@ jobs:
       run: |
         docker pull "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ steps.tag.outputs.tag }}"
     - name: Run image
-      run: docker run -it -d --name builder -v $GITHUB_WORKSPACE:/workspace -w /workspace docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ steps.tag.outputs.tag }}"
+      run: docker run -it -d --name builder -v $GITHUB_WORKSPACE:/workspace -w /workspace docker.pkg.github.com/$GITHUB_REPOSITORY/munya:${{ steps.tag.outputs.tag }}
 
 
 
