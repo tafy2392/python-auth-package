@@ -20,7 +20,7 @@ jobs:
         fi
     - name: Build and tag image
       run: |
-        docker build -t 'docker.pkg.github.com/$GITHUB_REPOSITORY/munya:'$TAG
+        docker build -t "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:"$TAG
     - name: Docker login
       run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p $GITHUB_TOKEN
       env:
