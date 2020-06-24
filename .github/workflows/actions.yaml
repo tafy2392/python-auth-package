@@ -3,35 +3,50 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   RegistryPush:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-$TAG
     steps:
     - uses: actions/checkout@v1
+    - name: Determine if its a push or pull request
+      run: |
+        if [ ${{ github.event_name }} == 'pull_request' ]; echo '::set-env name=TAG::${{ github.head_ref }}' ;
+        else
+          echo '::set-env name=TAG::latest'
+        fi
     - name: Build and tag image
       run: |
-        docker build -t "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:latest" .
+        docker build -t "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:$TAG"
     - name: Docker login
       run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p $GITHUB_TOKEN
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Publish to GPR
-      run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:latest"
+      run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:$TAG"
   BuildFromGPR:
     needs: RegistryPush
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-$TAG
     steps:
     - uses: actions/checkout@v1
+    - name: Determine if its a push or pull request
+      run: |
+        if [ ${{ github.event_name }} == 'pull_request' ]; echo '::set-env name=TAG::${{ github.head_ref }}' ;
+        else
+          echo '::set-env name=TAG::latest'
+        fi
     - name: Docker login
       run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p $GITHUB_TOKEN
       env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Pull Docker image
       run: |
-        docker pull "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:latest"
+        docker pull "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:$TAG"
     - name: Run image
-      run: docker run -it -d --name builder -v $GITHUB_WORKSPACE:/workspace -w /workspace docker.pkg.github.com/$GITHUB_REPOSITORY/munya:latest
+      run: docker run -it -d --name builder -v $GITHUB_WORKSPACE:/workspace -w /workspace docker.pkg.github.com/$GITHUB_REPOSITORY/munya:$TAG
 
 
 
