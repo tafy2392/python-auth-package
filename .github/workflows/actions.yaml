@@ -26,7 +26,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Publish to GPR
-      run: docker push 'docker.pkg.github.com/$GITHUB_REPOSITORY/munya:'$TAG
+      run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:"$TAG
   BuildFromGPR:
     needs: RegistryPush
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Pull Docker image
       run: |
-        docker pull 'docker.pkg.github.com/$GITHUB_REPOSITORY/munya:'$TAG
+        docker pull "docker.pkg.github.com/$GITHUB_REPOSITORY/munya:"$TAG
     - name: Run image
       run: docker run -it -d --name builder -v $GITHUB_WORKSPACE:/workspace -w /workspace docker.pkg.github.com/$GITHUB_REPOSITORY/munya:$TAG
 
