@@ -15,7 +15,7 @@ jobs:
     - name: Determine if its a push or pull request
       id: tag
       run: |
-        if [ github.event_name  == 'pull_request' ]; then echo "::set-output name=tag::${{ github.head_ref }}" ;
+        if [ ${{github.event_name }} == 'pull_request' ]; then echo "::set-output name=tag::${{ github.head_ref }}"; echo "this part" ;
         else
           echo '::set-output name=tag::latest'
         fi
@@ -34,6 +34,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Determine if its a push or pull request
+      id: tag
       run: |
         if [ github.event_name  == 'pull_request' ]; then echo "::set-output name=tag::${{ github.head_ref }}" ;
         else
