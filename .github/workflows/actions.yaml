@@ -11,7 +11,7 @@ jobs:
   RegistryPush:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2.3.1
     - name: Determine if its a push or pull request
       id: tag
       run: |
@@ -33,7 +33,7 @@ jobs:
     needs: RegistryPush
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2.3.1
     - name: Determine if its a push or pull request
       id: tag
       run: |
