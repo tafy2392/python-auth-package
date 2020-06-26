@@ -20,7 +20,7 @@ jobs:
       name: Check out code
     - name: Set Repository name
       id: repo
-      run: echo "::set-output repo=tafymunya/mara"
+      run: echo "::set-output repo='tafymunya/mara'"
     - name: Determine if its a push or pull request
       id: tag
       run: |
