@@ -14,16 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       image-tag: ${{ steps.tag.outputs.tag }}
-      repo: ${{ steps.repo.outputs.repo }}
+      repo: ${{ steps.tag.outputs.repo }}
     steps:
     - uses: actions/checkout@v2
       name: Check out code
     - name: Set Repository name
-      id: repo
-      run: echo "::set-output repo='tafymunya/mara'"
-    - name: Determine if its a push or pull request
       id: tag
       run: |
+        echo "::set-output name=repo::tafymunya/mara"
         if [ ${{ github.event_name }} == 'pull_request' ]; then
           # Pull requests are tagged with the name of their branch.
           echo "::set-output name=tag::${{ github.head_ref }}";
@@ -41,7 +39,7 @@ jobs:
     - uses: mr-smithers-excellent/docker-build-push@v3
       name: Build & push Docker image
       with:
-        image: tafymunya/mara
+        image: ${{ steps.tag.outputs.repo }}
         tag: ${{ steps.tag.outputs.tag }}
         registry: docker.io
         dockerfile: Dockerfile
