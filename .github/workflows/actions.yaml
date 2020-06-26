@@ -37,7 +37,7 @@ jobs:
     - uses: mr-smithers-excellent/docker-build-push@v3
       name: Build & push Docker image
       with:
-        image: mara
+        image: tafymunya/mara
         tag: latest
         registry: docker.io
         dockerfile: Dockerfile
