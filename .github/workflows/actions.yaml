@@ -42,7 +42,7 @@ jobs:
       name: Build & push Docker image
       with:
         image: ${{ steps.repo.outputs.repo }}
-        tag: ${{${{ steps.repo.outputs.repo }}
+        tag: ${{ steps.tag.outputs.tag}}
         registry: docker.io
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
