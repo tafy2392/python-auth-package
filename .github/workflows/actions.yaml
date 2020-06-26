@@ -41,8 +41,8 @@ jobs:
     - uses: mr-smithers-excellent/docker-build-push@v3
       name: Build & push Docker image
       with:
-        image: ${{ steps.repo.outputs.repo }}
-        tag: ${{ steps.tag.outputs.tag}}
+        image: tafymunya/mara
+        tag: ${{ steps.tag.outputs.tag }}
         registry: docker.io
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
