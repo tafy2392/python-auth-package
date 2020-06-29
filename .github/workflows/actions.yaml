@@ -58,3 +58,7 @@ jobs:
         tafymunya/mara:${{ needs.RegistryPush.outputs.image-tag }}
         docker login docker.pkg.github.com -u tafymunya -p Tafy2392@
         docker push tafymunya/mara:${{ needs.RegistryPush.outputs.image-tag }}
+        docker pull "docker.pkg.github.com/$GITHUB_REPOSITORY/marathon-acme-trio:${{ steps.tag.outputs.tag }}"
+
+
+
