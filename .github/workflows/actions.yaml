@@ -44,7 +44,7 @@ jobs:
       run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/marathon-acme-trio:${{ steps.tag.outputs.tag }}"
   pullFromGPR:
     needs: RegistryPush
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Docker login
