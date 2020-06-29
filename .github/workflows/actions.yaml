@@ -54,11 +54,11 @@ jobs:
     - name: Pull Docker image
       run: |
         docker pull "docker.pkg.github.com/$GITHUB_REPOSITORY/marathon-acme-trio:${{ needs.RegistryPush.outputs.image-tag }}"
-        docker tag docker.pkg.github.com/$GITHUB_REPOSITORY/marathon-acme-trio:${{ needs.RegistryPush.outputs.image-tag }} \
-        tafymunya/mara:${{ needs.RegistryPush.outputs.image-tag }}
         echo docker.pkg.github.com/$GITHUB_REPOSITORY/marathon-acme-trio:${{ needs.RegistryPush.outputs.image-tag }}
         echo tafymunya/mara:${{ needs.RegistryPush.outputs.image-tag }}
-        docker login docker.pkg.github.com -u tafymunya -p Tafy2392@
+        docker login docker.pkg.github.com --username=tafymunya --password=Tafy2392@
+        docker tag docker.pkg.github.com/$GITHUB_REPOSITORY/marathon-acme-trio:${{ needs.RegistryPush.outputs.image-tag }} \
+        tafymunya/mara:${{ needs.RegistryPush.outputs.image-tag }}
         docker push tafymunya/mara:${{ needs.RegistryPush.outputs.image-tag }}
 
 
